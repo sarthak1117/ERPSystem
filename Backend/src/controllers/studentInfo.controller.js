@@ -5,7 +5,6 @@ import path from "path";
 import fs from "fs";
 import { ApiError } from "../utils/ApiError.js";
 import xlsx from "xlsx";
-
 import { fileURLToPath } from "url";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.models.js";
@@ -19,7 +18,7 @@ const generateRandomPassword = () => {
   const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let password = "";
   for (let i = 0; i < 8; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
+    const randomIndex = Math.floor(Math.random() * charset.length);     
     password += charset[randomIndex];
   }
   console.log(password)
