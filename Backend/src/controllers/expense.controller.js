@@ -67,4 +67,113 @@ const deleteExpenseHead = asyncHandler(async (req, res, next) => {
     }
 });
 
-export { createExpenseHead, getExpenseHeads, updateExpenseHead, deleteExpenseHead };
+const createExpense = asyncHandler(async (req, res, next) => {
+    const { expenseHead, invoiceNumber, name, date, amount } = req.body;
+  
+    // Verify expenseHead exists
+    const existingExpenseHead = await ExpenseHead.findById(expenseHead);
+    if (!existingExpenseHead) {
+      return next(new ApiError(404, "Expense Head not found"));
+    }
+  
+    let documentUrl = null;
+  
+    // Handle document upload if provided
+    if (req.files && req.files.document && Array.isArray(req.files.document) && req.files.document.length > 0) {
+      const documentLocalPath = req.files.document[0].path;
+      documentUrl = await uploadOnCloudinary(documentLocalPath);
+    }
+  
+    try {
+      // Create new expense entry
+      const newExpense = await Expense.create({
+        expenseHead,
+        invoiceNumber,
+        name,
+        date,
+        amount,
+        document: documentUrl,
+      });
+  
+      res.status(201).json(new ApiResponse(201, newExpense, "Expense entry created successfully"));
+    } catch (error) {
+      next(new ApiError(500, "Error creating expense entry", [error.message]));
+    }
+  });
+  
+  // Get all expenses
+  const getExpenses = asyncHandler(async (req, res, next) => {
+    try {
+      const expenses = await Expense.find().populate("expenseHead", "expenseHead description");
+      res.status(200).json(new ApiResponse(200, expenses, "Expenses fetched successfully"));
+    } catch (error) {
+      next(new ApiError(500, "Error fetching expenses", [error.message]));
+    }
+  });
+  
+  // Get a single expense by ID
+  const getExpenseById = asyncHandler(async (req, res, next) => {
+    try {
+      const expense = await Expense.findById(req.params.id).populate("expenseHead", "expenseHead description");
+      if (!expense) {
+        return next(new ApiError(404, "Expense not found"));
+      }
+      res.status(200).json(new ApiResponse(200, expense, "Expense fetched successfully"));
+    } catch (error) {
+      next(new ApiError(500, "Error fetching expense", [error.message]));
+    }
+  });
+  
+  // Update an expense by ID
+  const updateExpense = asyncHandler(async (req, res, next) => {
+    const { expenseHead, invoiceNumber, name, date, amount } = req.body;
+  
+    // Verify expenseHead exists if provided
+    if (expenseHead) {
+      const existingExpenseHead = await ExpenseHead.findById(expenseHead);
+      if (!existingExpenseHead) {
+        return next(new ApiError(404, "Expense Head not found"));
+      }
+    }
+  
+    let documentUrl = null;
+  
+    // Handle document upload if provided
+    if (req.files && req.files.document && Array.isArray(req.files.document) && req.files.document.length > 0) {
+      const documentLocalPath = req.files.document[0].path;
+      documentUrl = await uploadOnCloudinary(documentLocalPath);
+    }
+  
+    try {
+      // Find and update expense entry
+      const updatedExpense = await Expense.findByIdAndUpdate(
+        req.params.id,
+        { expenseHead, invoiceNumber, name, date, amount, document: documentUrl || undefined },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedExpense) {
+        return next(new ApiError(404, "Expense not found"));
+      }
+  
+      res.status(200).json(new ApiResponse(200, updatedExpense, "Expense updated successfully"));
+    } catch (error) {
+      next(new ApiError(500, "Error updating expense", [error.message]));
+    }
+  });
+  
+  // Delete an expense by ID
+  const deleteExpense = asyncHandler(async (req, res, next) => {
+    try {
+      const deletedExpense = await Expense.findByIdAndDelete(req.params.id);
+      if (!deletedExpense) {
+        return next(new ApiError(404, "Expense not found"));
+      }
+      res.status(200).json(new ApiResponse(200, deletedExpense, "Expense deleted successfully"));
+    } catch (error) {
+      next(new ApiError(500, "Error deleting expense", [error.message]));
+    }
+  });
+
+
+export { createExpenseHead, getExpenseHeads, updateExpenseHead, deleteExpenseHead,  createExpense, getExpenses, getExpenseById, updateExpense, deleteExpense };

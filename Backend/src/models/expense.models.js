@@ -15,13 +15,14 @@ const expenseHeadSchema = new mongoose.Schema({
 
 // Define schema for Expense
 const expenseSchema = new mongoose.Schema({
+
   expenseHead: {  // Referencing expenseHeadSchema
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ExpenseHead',
     required: true,
   },
-  invoice: {
-    type: String,
+  invoiceNumber: {
+    type: Number,
     trim: true,
   },
   name: {  // Changed to camelCase for consistency
