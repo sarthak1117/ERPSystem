@@ -89,9 +89,9 @@ const Layout = ({ children }) => {
       </div>
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${isCollapsed ? "ml-20" : "ml-64"}`}>
+      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 `}>
         {/* Header */}
-        <div className="bg-gray-800 p-2">
+        <div className="p-2 border-b border-gray-300">
           <Header isCollapsed={isCollapsed} />
         </div>
 

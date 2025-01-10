@@ -75,7 +75,7 @@ const DataViewTable = ({
     const ws = utils.json_to_sheet(filteredData);
     const wb = utils.book_new();
     utils.book_append_sheet(wb, ws, 'Data');
-    writeFile(wb, ${heading}.xlsx);
+    writeFile(wb, `${heading}.xlsx`);
   };
 
   const downloadCSV = () => {
@@ -85,7 +85,7 @@ const DataViewTable = ({
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = ${heading}.csv;
+    a.download = `${heading}.csv`;
     a.click();
   };
 
@@ -102,7 +102,7 @@ const DataViewTable = ({
         )
       ),
     });
-    doc.save(${heading}.pdf);
+    doc.save(`${heading}.pdf`);
   };
 
   const handleDelete = () => {
@@ -152,7 +152,7 @@ const DataViewTable = ({
           </div>
         </div>
         <div className="flex justify-between">
-          <div className="px-6 py-3 mt-3">
+          <div className="px-4 py-3 mt-7">
             <input
               type="text"
               placeholder="Search..."

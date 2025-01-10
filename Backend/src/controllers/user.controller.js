@@ -5,23 +5,15 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-// const generateAccessAndRefereshTokens = async (userId) => {
-//   try {
-//     const user = await User.findById(userId);
-//     const accessToken = user.generateAccessToken();
-//     const refreshToken = user.generateRefreshToken();
+ 
 
-//     user.refreshToken = refreshToken;
-//     await user.save({ validateBeforeSave: false });
+const hashPassword = asyncHandler(async () => {
+ 
+  const saltRounds = 12
 
-//     return { accessToken, refreshToken };
-//   } catch (error) {
-//     throw new ApiError(
-//       500,
-//       "Something went wrong while generating referesh and access token"
-//     );
-//   }
-// };
+  return await bcrypt.hash(password, saltRounds)
+
+})
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, username, password, roles } =
@@ -42,11 +34,13 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with email or username already exists");
   }
   //console.log(req.files);
+ const hashedPassword = hashPassword(password)
+
   const lowercaseUsername = username ? username.toLowerCase() : null;
   const user = await User.create({
     fullName,
-    email,
-    password,
+    email, 
+    password: hashedPassword,
     username: lowercaseUsername,
     roles
   });
@@ -65,8 +59,10 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) =>{
-  
+ 
+
   const {email, username, password} = req.body
+  console.log("Request body:", req.body);
   console.log(email);
 
   if (!username && !email) {
@@ -80,6 +76,8 @@ const loginUser = asyncHandler(async (req, res) =>{
   const user = await User.findOne({
       $or: [{username}, {email}]
   })
+
+  console.log(user.username)
 
   if (!user) {
     return res.status(404).json({
@@ -97,42 +95,42 @@ const loginUser = asyncHandler(async (req, res) =>{
   });
 }
 
-//  const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
+ const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
 
 
-  // const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+  const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
   
-   const accessToken = jwt.sign(
-      {
-        UserInfo: {
-          _id: user._id,
-          email: user.email,
-          username: user.username,
-          fullName: user.fullName,
-          roles: user.roles,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-      }
-    );
+  //  const accessToken = jwt.sign(
+  //     {
+  //       UserInfo: {
+  //         _id: user._id,
+  //         email: user.email,
+  //         username: user.username,
+  //         fullName: user.fullName,
+  //         roles: user.roles,
+  //       },
+  //     },
+  //     process.env.ACCESS_TOKEN_SECRET,
+  //     {
+  //       expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+  //     }
+  //   );
   
   
-    const refreshToken = jwt.sign(
-      {
-        _id: user._id,
+  //   const refreshToken = jwt.sign(
+  //     {
+  //       _id: user._id,
         
-      },
-      process.env.REFRESH_TOKEN_SECRET,
+  //     },
+  //     process.env.REFRESH_TOKEN_SECRET,
   
-      {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-      }
-    );
+  //     {
+  //       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+  //     }
+  //   );
   
-    user.refreshToken = refreshToken; // Save refresh token to user document
+    // user.refreshToken = refreshToken; // Save refresh token to user document
   await user.save();
 
   const options = {

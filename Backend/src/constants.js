@@ -1,1 +1,1 @@
-export const DB_NAME = "ERPSystem"
+export const DB_NAME = "ERPDatabase"

@@ -19,12 +19,12 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 
 // Routes
-// import userRouter from './routes/user.routes.js';
+import userRouter from './routes/user.routes.js';
 // import studentInfoRouter from './routes/studentInfo.route.js';
 // import academicsRouter from "./routes/academics.route.js";
 // import academicFeesRouter from "./routes/academicFees.route.js";
 // import expenseRouter from "./routes/expense.route.js";
-// import incomeRouter from "./routes/income.route.js";
+import incomeRouter from "./routes/income.routes.js";
 // import attendanceRouter from "./routes/attendence.route.js";
 // import staffRouter from "./routes/staff.route.js";
 // import leaveRouter from "./routes/leave.route.js";
@@ -33,11 +33,11 @@ app.use(cookieParser());
 // import uploadCenterRouter from "./routes/uploadCenter.routes.js";
 
 // // Mounting routes
-// app.use("/api/v1/users", userRouter);
+app.use("/api/v1/users", userRouter);
 // app.use("/api/v1/studentsInfo", studentInfoRouter);
 // app.use("/api/v1/academics", academicsRouter);
 // app.use("/api/v1/academicFees", academicFeesRouter);
-// app.use("/api/v1/income", incomeRouter);
+app.use("/api/v1/income", incomeRouter);
 // app.use("/api/v1/expense", expenseRouter);
 // app.use("/api/v1/attendance", attendanceRouter);
 // app.use("/api/v1/staff", staffRouter);

@@ -10,6 +10,8 @@ import {  thunk } from 'redux-thunk';
 // import batchReducer from './reducers/BatchSlice';
 // import studentReducer from './reducers/StudentSlice';
 // import courseBatchReducer from './reducers/CourseBatchSlice';
+import authReducer from './Reducer/AuthenticationSlice'
+import { incomeHeadReducer } from './Reducer/IncomeHeadslice';
 
 // // Combine reducers
 const rootReducer = combineReducers({
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   // batches: batchReducer,
   // studentData: studentReducer,
   // courseBatch: courseBatchReducer,
+    auth: authReducer,
+    incomeHead: incomeHeadReducer
 });
 
 const persistConfig = {

@@ -525,12 +525,26 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
         "Marks Grade",
       ],
     },
+    {
+      title: "Examination",
+      icon: <FaFileAlt />,
+      submenus: [
+        "Exam Group",
+        "Exam Schedule",
+        "Exam Result",
+        "Design Admit Card",
+        "Print Admit Card",
+        "Design Marksheet",
+        "Print Marksheet",
+        "Marks Grade",
+      ],
+    },
   ];
 
   return (
-    <div className={`flex flex-col h-screen bg-gray-800 text-white ${isCollapsed ? "w-20" : "w-64"} transition-all duration-300`}>
+    <div className={`flex flex-col h-screen bg-blue-900 text-white ${isCollapsed ? "w-20" : "w-64"} transition-all duration-300`}>
       {/* Sidebar Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-700">
+      <div className="flex items-center justify-between p-4 border-b border-blue-700">
         <Link to="/" className="navbar-brand mt-1">
           <img
             src="/download 2.png"
@@ -551,7 +565,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
           <div key={index}>
             {/* Main Heading */}
             <button
-              className="flex items-center w-full px-4 py-3 text-left hover:bg-gray-700"
+              className="flex items-center w-full px-4 py-3 text-left hover:bg-blue-300"
               onClick={() => toggleSection(menu.title)}
             >
               {menu.icon}
