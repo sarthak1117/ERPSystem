@@ -20,7 +20,7 @@ const App = () => {
             {/* Define routes for different pages */}
             <Route path="/" element={<Layout/>} />
             <Route path="/userlogin" element={<Login/>} />
-            <Route path="/income" element={<AddIncomeHead/>} />
+            <Route path="/incomeHeads" element={<AddIncomeHead/>} />
            
           </Routes>
         </main>

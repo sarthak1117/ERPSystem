@@ -118,3 +118,74 @@ const courseSlice = createSlice({
 
 export const { resetCourseState } = courseSlice.actions;
 export default courseSlice.reducer;
+
+
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const addCourse = createAsyncThunk('courses/addCourse', async (courseData, { rejectWithValue }) => {
+  try {
+    const response = await axios.post('/api/v1/academics/addCourse', courseData);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      return rejectWithValue(error.response.data);
+    }
+    return rejectWithValue(error.message);
+  }
+});
+
+export const fetchBatches = createAsyncThunk('batches/fetchBatches', async () => {
+  const response = await axios.get('/api/v1/academics/batches');
+  return response.data.data;
+});
+
+export const fetchCourses = createAsyncThunk('courses/fetchCourses', async () => {
+  const response = await axios.get('/api/v1/academics/courses');
+  return response.data.data;
+});
+
+const courseSlice = createSlice({
+  name: 'courses',
+  initialState: {
+    addCourseLoading: false,
+    addCourseError: null,
+    addCourseSuccess: false,
+    data: [],
+    batches: [],
+    modifiedCourses: []
+  },
+  reducers: {
+    resetCourseState: (state) => {
+      state.addCourseLoading = false;
+      state.addCourseError = null;
+      state.addCourseSuccess = false;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addCourse.pending, (state) => {
+        state.addCourseLoading = true;
+        state.addCourseError = null;
+        state.addCourseSuccess = false;
+      })
+      .addCase(addCourse.fulfilled, (state, action) => {
+        state.addCourseLoading = false;
+        state.addCourseSuccess = true;
+        state.data.push(action.payload);
+      })
+      .addCase(addCourse.rejected, (state, action) => {
+        state.addCourseLoading = false;
+        state.addCourseError = action.payload || 'Something went wrong';
+      })
+      .addCase(fetchBatches.fulfilled, (state, action) => {
+        state.batches = action.payload;
+      })
+      .addCase(fetchCourses.fulfilled, (state, action) => {
+        state.modifiedCourses = action.payload;
+      });
+  }
+});
+
+export const { resetCourseState } = courseSlice.actions;
+export default courseSlice.reducer;

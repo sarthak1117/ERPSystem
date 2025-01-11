@@ -41,7 +41,10 @@ const addCourse = asyncHandler(async (req, res) => {
         "data saved successfully"
       )
     );
-  });     const getCourses = async (req, res) =>{
+  });    
+  
+  
+  const getCourses = async (req, res) =>{
       try{
         const courses = await Course.find().populate('batches', 'name'); 
   
@@ -97,6 +100,21 @@ const addCourse = asyncHandler(async (req, res) => {
       });
     }
   });
+
+  const addBatch = asyncHandler(async (req, res) => {
+    const { name } = req.body;
+
+    if (!name) {
+        throw new ApiError('Batch name is required', 400);
+    }
+
+    // Create new batch
+    const newBatch = new Batch({ name });
+
+    // Save the batch
+    const savedBatch = await newBatch.save();
+    res.status(201).json(savedBatch);
+});
 
   const getBatches = async (req, res) => {
     try {
