@@ -18,16 +18,35 @@ export const fetchIncomes = createAsyncThunk(
 );
 
 export const createIncome = createAsyncThunk(
-  'income/create',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(BASE_URL, data);
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+    'income/create',
+    async (data, { rejectWithValue }) => {
+      try {
+        const formData = new FormData();
+        
+        // Append each field to FormData
+        for (const key in data) {
+          if (data[key] instanceof FileList) {
+            // Handle multiple files (FileList)
+            Array.from(data[key]).forEach((file) => {
+              formData.append(key, file);
+            });
+          } else {
+            formData.append(key, data[key]);
+          }
+        }
+  
+        const response = await axios.post(BASE_URL, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        return response.data.data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+      }
     }
-  }
-);
+  );
 
 export const updateIncome = createAsyncThunk(
   'income/update',
@@ -97,3 +116,4 @@ const incomeSlice = createSlice({
 });
 
 export const incomeReducer = incomeSlice.reducer;
+

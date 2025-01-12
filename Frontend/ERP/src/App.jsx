@@ -7,7 +7,7 @@ import Header from './components/Layout/Navbar';
 import Sidebar from './components/Layout/SideBar.jsx';
 import Login from './pages/LoginDashboard/login.jsx';
 import AddIncomeHead from './pages/Income/AddIncomeHead.jsx';
-
+import AddIncome from './pages/Income/AddIncome.jsx';
 
 
 const App = () => {
@@ -20,6 +20,7 @@ const App = () => {
             {/* Define routes for different pages */}
             <Route path="/" element={<Layout/>} />
             <Route path="/userlogin" element={<Login/>} />
+            <Route path="/AddIncome" element={<AddIncome/>} />
             <Route path="/incomeHeads" element={<AddIncomeHead/>} />
            
           </Routes>

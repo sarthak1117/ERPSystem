@@ -84,14 +84,14 @@ const Layout = ({ children }) => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar - Fixed position */}
-      <div className={`bg-gray-800 text-white transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"}`}>
+      <div className={`top-0 bottom-0 left-0 z-10 transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"}`}>
         <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
       </div>
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 `}>
+      <div className={`flex-1 flex flex-col transition-all duration-300`}>
         {/* Header */}
-        <div className="p-2 border-b border-gray-300">
+        <div className="p-2 border-b border-gray-300 ">
           <Header isCollapsed={isCollapsed} />
         </div>
 

@@ -29,12 +29,12 @@ router
 router
   .route('/')
   .get(getIncomes) // Get all Incomes
-  .post(upload.fields([{ name: 'document', maxCount: 1 }]), createIncome); // Create an Income with optional document upload
+  .post(upload.single("Document"), createIncome); // Create an Income with optional document upload
 
 router
   .route('/:id')
   .get(getIncomeById) // Get an Income by ID
-  .put(upload.fields([{ name: 'document', maxCount: 1 }]), updateIncome) // Update an Income by ID with optional document upload
+  .put(upload.single("Document"), updateIncome) // Update an Income by ID with optional document upload
   .delete(deleteIncome); // Delete an Income by ID
 
 export default router;

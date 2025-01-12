@@ -84,7 +84,7 @@ const StaffDetailsUpload = () => {
         formData.append(key, values[key]);
       });
       try {
-        await dispatch(submitStaffDetails (formData)).unwrap();
+        await dispatch(submitStaffDetails(formData)).unwrap();
         alert('Staff information saved successfully!');
       } catch (error) {
         console.error('Error saving staff information:', error);

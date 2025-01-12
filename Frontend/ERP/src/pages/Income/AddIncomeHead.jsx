@@ -133,4 +133,4 @@ const AddIncomeHead = () => {
   );
 };
 
-export default AddIncomeHead;
+export default AddIncomeHead; 

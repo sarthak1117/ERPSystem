@@ -30,8 +30,7 @@ const incomeHeadSchema = new mongoose.Schema({
       trim: true,
     },
     Date: {  // Changed to camelCase for consistency
-      type: Date,
-      default: Date.now,  // Default to current date if not provided
+      type: Date,// Default to current date if not provided
     },
     Amount: {
       type: Number,
