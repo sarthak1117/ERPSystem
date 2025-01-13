@@ -28,9 +28,12 @@ import incomeRouter from "./routes/income.routes.js";
 // import attendanceRouter from "./routes/attendence.route.js";
 // import staffRouter from "./routes/staff.route.js";
 // import leaveRouter from "./routes/leave.route.js";
-// import designationanddepartmentRouter from "./routes/designationanddepartement.routes.js";
 // import ExaminationRouter from "./routes/Examination.route.js";
 // import uploadCenterRouter from "./routes/uploadCenter.routes.js";
+import departmentRouter from './routes/department.routes.js';
+import designationRouter from './routes/designation.routes.js';
+
+
 
 // // Mounting routes
 app.use("/api/v1/users", userRouter);
@@ -41,7 +44,8 @@ app.use("/api/v1/income", incomeRouter);
 // app.use("/api/v1/expense", expenseRouter);
 // app.use("/api/v1/attendance", attendanceRouter);
 // app.use("/api/v1/staff", staffRouter);
-// app.use("/api/v1/designationanddepartment", designationanddepartmentRouter);
+app.use("/api/v1/designation", designationRouter);
+app.use("/api/v1/department", departmentRouter);
 // app.use("/api/v1/leave", leaveRouter);
 // app.use("/api/v1/Examination", ExaminationRouter);
 // app.use("/api/v1/uploadContent", uploadCenterRouter);  // Corrected path by adding a leading slash

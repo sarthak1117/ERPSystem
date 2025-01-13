@@ -141,153 +141,153 @@ const Staff = mongoose.model('Staff', staffSchema);
 export default Staff;
 
 
-const staffSchema = new mongoose.Schema({
-    StaffId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    FirstName: {
-      type: String,
-      required: true,
-    },
-    LastName: {
-      type: String,
-      required: true,
-    },
-    FatherName: {
-      type: String,
-      required: true,
-    },
-    roles: {
-      type: [String],
-      enum: ["admin", "sub-admin", "faculty", "librarian", "humanResource","accountant"],
-    },
-    MotherName: {
-      type: String,
-      required: true,
-    },
+// const staffSchema = new mongoose.Schema({
+//     StaffId: {
+//       type: String,
+//       required: true,
+//       unique: true,
+//     },
+//     FirstName: {
+//       type: String,
+//       required: true,
+//     },
+//     LastName: {
+//       type: String,
+//       required: true,
+//     },
+//     FatherName: {
+//       type: String,
+//       required: true,
+//     },
+//     roles: {
+//       type: [String],
+//       enum: ["admin", "sub-admin", "faculty", "librarian", "humanResource","accountant"],
+//     },
+//     MotherName: {
+//       type: String,
+//       required: true,
+//     },
   
-    Email: { type: String, required: true },
-    StaffPhoto: {
-      type: String,
-      default: null,
-    },
-    Gender: {
-      type: String,
-      required: true,
-    },
-    DateOfBirth: {
-      type: Date,
-      required: true,
-    },
-    Phone: {
-      type: String,
-    },
-    EmergencyContactNumber: {
-      type: String,
-    },
-    MaritalStatus: {
-      type: String,
-      enum: ["Married", "Single", "Widowed", "Divorced"],
-    },
-    Address: {
+//     Email: { type: String, required: true },
+//     StaffPhoto: {
+//       type: String,
+//       default: null,
+//     },
+//     Gender: {
+//       type: String,
+//       required: true,
+//     },
+//     DateOfBirth: {
+//       type: Date,
+//       required: true,
+//     },
+//     Phone: {
+//       type: String,
+//     },
+//     EmergencyContactNumber: {
+//       type: String,
+//     },
+//     MaritalStatus: {
+//       type: String,
+//       enum: ["Married", "Single", "Widowed", "Divorced"],
+//     },
+//     Address: {
       
-      CurrentAddress: {
-        type: String,
-      },
-      PermanentAddress: {
-        type: String,
-      },
-    },
-    Qualification: {
-      type: String,
-    },
-    WorkExperience: {
-      type: String,
-    },
-    Note: {
-      type: String,
-    },
-    ContractType: {
-      type: String,
-      enum: ["Part-time", "Probation", "Full-time", "Intern"],
-    },
-    WorkShift: {
-      type: String,
-    },
+//       CurrentAddress: {
+//         type: String,
+//       },
+//       PermanentAddress: {
+//         type: String,
+//       },
+//     },
+//     Qualification: {
+//       type: String,
+//     },
+//     WorkExperience: {
+//       type: String,
+//     },
+//     Note: {
+//       type: String,
+//     },
+//     ContractType: {
+//       type: String,
+//       enum: ["Part-time", "Probation", "Full-time", "Intern"],
+//     },
+//     WorkShift: {
+//       type: String,
+//     },
     
-    EPFNo: {
-      type: String,
-    },
-    Basic: {
-      type: Number,
-    },
-    AccountTitle: {
-      type: String,
-    },
-    BankAccountNumber: {
-      type: String,
-    },
-    BankName: {
-      type: String,
-    },
-    IFSCCode: {
-      type: String,
-    },
-    BankBranchName: {
-      type: String,
-    },
-    Location: {
-      type: String,
-    },
+//     EPFNo: {
+//       type: String,
+//     },
+//     Basic: {
+//       type: Number,
+//     },
+//     AccountTitle: {
+//       type: String,
+//     },
+//     BankAccountNumber: {
+//       type: String,
+//     },
+//     BankName: {
+//       type: String,
+//     },
+//     IFSCCode: {
+//       type: String,
+//     },
+//     BankBranchName: {
+//       type: String,
+//     },
+//     Location: {
+//       type: String,
+//     },
   
-    Resume: {
-      type: String,
-      default: null,
-      // You may add other validation rules if needed
-    },
-    JoiningLetter: {
-      type: String,
-      default: null,
-      // You may add other validation rules if needed
-    },
-    OtherDocuments: [
-      {
-        type: String,
-        default: null,
-        // You may add other validation rules if needed
-      },
-    ],
+//     Resume: {
+//       type: String,
+//       default: null,
+//       // You may add other validation rules if needed
+//     },
+//     JoiningLetter: {
+//       type: String,
+//       default: null,
+//       // You may add other validation rules if needed
+//     },
+//     OtherDocuments: [
+//       {
+//         type: String,
+//         default: null,
+//         // You may add other validation rules if needed
+//       },
+//     ],
   
-    Department: 
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Department",
-        required: true,
-      },
-    
-  
-    Designation: 
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Designation",
-        required: true,
-      },
+//     Department: 
+//       {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "Department",
+//         required: true,
+//       },
     
   
-      leaveBalance: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'LeaveBalance'
-      },
+//     Designation: 
+//       {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "Designation",
+//         required: true,
+//       },
+    
   
-      LibraryCardNo: {
-      type: String,
-      ref: "LibraryNumber",
-       },
+//       leaveBalance: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'LeaveBalance'
+//       },
   
-    user : { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
-  });
+//       LibraryCardNo: {
+//       type: String,
+//       ref: "LibraryNumber",
+//        },
+  
+//     user : { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
+//   });
   
   // staffSchema.pre("save", async function (next) {
   //   if (this.isNew || this.isModified("Email")) {

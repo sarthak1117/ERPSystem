@@ -1,7 +1,8 @@
-import asyncHandler from "../middleware/asyncHandler";
-import { Designation } from "../models/designationModel";
-import { ApiResponse, ApiError } from "../utils/apiResponses";
-import { Department } from "../models/departmentModel";
+import { asyncHandler }from "../utils/asyncHandler.js";
+import { Designation } from "../models/departmentanddesignation.models.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { Department } from "../models/departmentanddesignation.models.js";
+import { ApiError } from "../utils/ApiError.js";
 
 
 // Create a new designation

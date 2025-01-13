@@ -104,7 +104,7 @@ const AddIncome = () => {
     <Layout>
       <div className="flex flex-wrap w-full -mt-6">
         {/* Form Section */}
-        <div className="w-full md:w-1/2 px-4 mb-4 sm-rounded-lg">
+        <div className="w-full md:w-1/3 px-4 mb-4 sm-rounded-lg">
           <div className="bg-slate-50 -ml-8 shadow-2xl rounded-lg p-8">
             <div className="border-b border-gray-400 pb-8 flex items-center justify-between">
               <h2 className="text-2xl font-semibold leading-7 text-gray-900">
@@ -122,7 +122,7 @@ const AddIncome = () => {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-4">
-                  <div className="flex flex-col w-1/2">
+                  <div className="flex flex-col w-full">
                     <SelectField label="Income Head" name="IncomeHead" options={IncomeHeadoptions} />
                     <NumberInput label="Invoice Number" name="InvoiceNumber"/>
                     <InputField label="Name" name="Name" />
@@ -154,13 +154,13 @@ const AddIncome = () => {
         </div>
 
         {/* Data Table Section */}
-        <div className="w-full md:w-1/2 sm-rounded-lg -mt-6 p-4">
+        <div className="w-full md:w-2/3 sm-rounded-lg -mt-6 p-4">
           <DataViewTable
             heading="Income Head List"
             data={AllIncome}
             fields={[
               { key: "Name", label: "Name" },
-              { key: "InvoiceNumber", label: "InvoiceNumber" },
+              { key: "InvoiceNumber", label: "Invoice" },
               { key: "Date", label: "Date" },
               { key: "IncomeHead", label: "IncomeHead" },
               { key: "Amount", label: "Amount" },
