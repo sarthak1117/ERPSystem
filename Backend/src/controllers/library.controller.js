@@ -16,6 +16,49 @@ const __dirname = path.dirname(__filename);
 
 import { uploadOnCloudinary } from "../utils/cloudinaryUtils.js"; // Import the utility function
 
+const addBook = asyncHandler(async (req, res) => {
+  const {
+    BookTitle,
+    BookNumber,
+    ISBNNumber,
+    Publisher,
+    Author,
+    BookPrice,
+    RackNumber,
+    Quantity,
+    Description,
+    Subject,
+    PostDate,
+  } = req.body;
+
+  // Validate required fields
+  if (!BookTitle || !BookNumber || !ISBNNumber || !Publisher || !Author || !BookPrice || !RackNumber || !Quantity) {
+    throw new ApiError(400, "All required fields must be provided");
+  }
+
+  // Create a new book instance
+  const newBook = new Book({
+    BookTitle,
+    BookNumber,
+    ISBNNumber,
+    Publisher,
+    Author,
+    BookPrice,
+    RackNumber,
+    Quantity,
+    Description,
+    Subject,
+    PostDate,
+  });
+
+  // Save the book to the database
+  await newBook.save();
+
+  // Return a success response
+  res.status(201).json(new ApiResponse(201, newBook, "Book added successfully"));
+});
+
+
 const importBooks = asyncHandler(async (req, res) => {
     try {
         if (!req.file) {
@@ -64,49 +107,49 @@ const importBooks = asyncHandler(async (req, res) => {
     }
 });
 
-const processAndSaveBooks = async (books, filePath, res) => {
-    try {
-        // Collect BookNumbers and ISBNNumbers
-        const bookNumbers = books.map(b => b.BookNumber);
-        const isbnNumbers = books.map(b => b.ISBNNumber);
+// const processAndSaveBooks = async (books, filePath, res) => {
+//     try {
+//         // Collect BookNumbers and ISBNNumbers
+//         const bookNumbers = books.map(b => b.BookNumber);
+//         const isbnNumbers = books.map(b => b.ISBNNumber);
 
-        // Check for duplicates in the database
-        const existingBooks = await Book.find({
-            $or: [
-                { BookNumber: { $in: bookNumbers } },
-                { ISBNNumber: { $in: isbnNumbers } }
-            ]
-        });
+//         // Check for duplicates in the database
+//         const existingBooks = await Book.find({
+//             $or: [
+//                 { BookNumber: { $in: bookNumbers } },
+//                 { ISBNNumber: { $in: isbnNumbers } }
+//             ]
+//         });
 
-        if (existingBooks.length > 0) {
-            const duplicates = existingBooks.map(b => `BookNumber: ${b.BookNumber}, ISBNNumber: ${b.ISBNNumber}`).join(', ');
-            throw new Error(`Duplicate entries found: ${duplicates}`);
-        }
+//         if (existingBooks.length > 0) {
+//             const duplicates = existingBooks.map(b => `BookNumber: ${b.BookNumber}, ISBNNumber: ${b.ISBNNumber}`).join(', ');
+//             throw new Error(`Duplicate entries found: ${duplicates}`);
+//         }
 
-        await Book.insertMany(books);
+//         await Book.insertMany(books);
         
-        // Upload the file to Cloudinary
-        const cloudinaryResponse = await uploadOnCloudinary(filePath);
+//         // Upload the file to Cloudinary
+//         const cloudinaryResponse = await uploadOnCloudinary(filePath);
         
-        if (!cloudinaryResponse) {
-            return res.status(500).send({
-                message: "Failed to upload the file to Cloudinary.",
-            });
-        }
+//         if (!cloudinaryResponse) {
+//             return res.status(500).send({
+//                 message: "Failed to upload the file to Cloudinary.",
+//             });
+//         }
 
-        // Send a success response with Cloudinary URL
-        res.status(200).send({
-            message: "Uploaded the file successfully.",
-            url: cloudinaryResponse.url,
-        });
-    } catch (error) {
-        fs.unlinkSync(filePath); // Remove the temporary file on error
-        res.status(500).send({
-            message: "Fail to import data into database!",
-            error: error.message,
-        });
-    }
-};
+//         // Send a success response with Cloudinary URL
+//         res.status(200).send({
+//             message: "Uploaded the file successfully.",
+//             url: cloudinaryResponse.url,
+//         });
+//     } catch (error) {
+//         fs.unlinkSync(filePath); // Remove the temporary file on error
+//         res.status(500).send({
+//             message: "Fail to import data into database!",
+//             error: error.message,
+//         });
+//     }
+// };
 
 
 
@@ -217,27 +260,6 @@ const issueBook = asyncHandler(async (req, res) => {
   });
   
 
-  const returnBook = asyncHandler(async (req, res) => {
-    const { BookNumber, LibraryCardNo, ReturnId } = req.body;
-  
-    console.log('Finding issued book with:', { BookNumber, ReturnId });
-  
-    const issuedBook = await IssuedBook.findOne({
-      BookNumber,
-      ReturnId,
-      Returned: false,
-    }).populate('Book');
-  
-    console.log('Issued book:', issuedBook);
-  
-    if (!issuedBook) {
-      throw new ApiError("No active book issuance found with the provided details", 404);
-    }
-  
-    // Proceed with the rest of the code
-  });
-
-
   const getIssueBooks = asyncHandler(async (req, res) => {
     try {
       // Fetch issued books where Returned is false
@@ -292,55 +314,6 @@ const issueBook = asyncHandler(async (req, res) => {
       res.status(500).json(new ApiResponse(500, null, "Failed to retrieve issued books"));
     }
   });
-
-
-  const importBooks = asyncHandler(async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).send("Please upload a file!");
-      }
-  
-      const filePath = path.join(__dirname, "../../public/temp", req.file.filename);
-      const fileExtension = path.extname(req.file.originalname).toLowerCase();
-  
-      let books = [];
-  
-      if (fileExtension === ".csv") {
-        // Process CSV file
-        fs.createReadStream(filePath)
-          .pipe(csv.parse({ headers: true }))
-          .on("error", (error) => {
-            throw new Error(error.message);
-          })
-          .on("data", (data) => {
-            books.push(data);
-          })
-          .on("end", async () => {
-            await processAndSaveBooks(books, filePath, res, req); // Passing req here
-          });
-  
-      } else if (fileExtension === ".xlsx") {
-        // Process XLSX file
-        const workbook = xlsx.readFile(filePath);
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        books = xlsx.utils.sheet_to_json(sheet);
-  
-        await processAndSaveBooks(books, filePath, res, req); // Passing req here
-      } else {
-        fs.unlinkSync(filePath); // Remove the temporary file for unsupported file types
-        res.status(400).send({
-          message: "Unsupported file type. Only CSV and Excel files are allowed.",
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        message: "Could not upload the file: " + req.file.originalname,
-        error: error.message,
-      });
-    }
-  });
   
   const processAndSaveBooks = async (books, filePath, res, req) => {
     try {
@@ -389,48 +362,6 @@ const issueBook = asyncHandler(async (req, res) => {
     }
   });
 
-  const addBook = asyncHandler(async (req, res) => {
-    const {
-      BookTitle,
-      BookNumber,
-      ISBNNumber,
-      Publisher,
-      Author,
-      BookPrice,
-      RackNumber,
-      Quantity,
-      Description,
-      Subject,
-      PostDate,
-    } = req.body;
-  
-    // Validate required fields
-    if (!BookTitle || !BookNumber || !ISBNNumber || !Publisher || !Author || !BookPrice || !RackNumber || !Quantity) {
-      throw new ApiError(400, "All required fields must be provided");
-    }
-  
-    // Create a new book instance
-    const newBook = new Book({
-      BookTitle,
-      BookNumber,
-      ISBNNumber,
-      Publisher,
-      Author,
-      BookPrice,
-      RackNumber,
-      Quantity,
-      Description,
-      Subject,
-      PostDate,
-    });
-  
-    // Save the book to the database
-    await newBook.save();
-  
-    // Return a success response
-    res.status(201).json(new ApiResponse(201, newBook, "Book added successfully"));
-  });
- 
 
   const addLibraryCardNumberStaff = asyncHandler(async (req, res) => {
     const { staffId, LibraryCardNo } = req.body;
@@ -495,3 +426,6 @@ const issueBook = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, student, "Library card number added successfully"));
   });
   
+
+
+  export {addLibraryCardNumberStaff,addLibraryCardNumberStudent,addBook,issueBook, getBooks,getIssueBooks,returnBook,importBooks}

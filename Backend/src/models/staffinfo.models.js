@@ -134,7 +134,7 @@ const staffSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "LibraryCard"
     }
-});
+});  
 
 const Staff = mongoose.model('Staff', staffSchema);
 

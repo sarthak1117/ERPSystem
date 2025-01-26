@@ -3,17 +3,17 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Layout from '../../components/Layout/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchStaff } from '../../redux/reducers/HumanResourseSlice';
+// import { fetchStaff } from '../../redux/reducers/HumanResourseSlice';
 
 const PayrollForm = () => {
     const dispatch = useDispatch();
-    const { departments = [], designations = [], staffMembers = [], loading, error } = useSelector(
-        (state) => state.humanResource
-      );
+    // const { departments = [], designations = [], staffMembers = [], loading, error } = useSelector(
+    //     (state) => state.humanResource
+    //   );
 
-      useEffect(() => {
-        dispatch(fetchStaff());
-      }, [dispatch]);
+      // useEffect(() => {
+      //   dispatch(fetchStaff());
+      // }, [dispatch]);
 
   const initialValues = {
     staffDetails: {
@@ -79,7 +79,7 @@ const PayrollForm = () => {
               <div>
                 <h2 className="text-xl font-semibold mb-2">Staff Details</h2>
                 <div className=' flex'>
-                <ProfileInfo
+                {/* <ProfileInfo
                   fields={[
                     { label: "Name", value: staffMembers.Phone },
                     { label: "StaffId", value: staffMembers.EmergencyContactNumber },
@@ -89,7 +89,7 @@ const PayrollForm = () => {
                     { label: "Designation", value: staffMembers.Designation },
                     { label: "Department", value: staffMembers.Department },                    
                   ]}
-                />
+                /> */}
 
                 </div>
                 </div>
@@ -102,8 +102,8 @@ const PayrollForm = () => {
                     <>
                       {values.earnings.map((_, index) => (
                         <div key={index} className="mb-2 flex items-center">
-                          <Field name={earnings.${index}.type} className="w-full p-2 border rounded" placeholder="Type" />
-                          <Field name={earnings.${index}.amount} type="number" className="w-full p-2 border rounded ml-2" placeholder="Amount" />
+                          <Field name={`earnings.${index}.type`} className="w-full p-2 border rounded" placeholder="Type" />
+                          <Field name={`earnings.${index}.amount`} type="number" className="w-full p-2 border rounded ml-2" placeholder="Amount" />
                           <button type="button" className="ml-2 text-red-500" onClick={() => remove(index)}>x</button>
                         </div>
                       ))}
@@ -117,8 +117,8 @@ const PayrollForm = () => {
                     <>
                       {values.deductions.map((_, index) => (
                         <div key={index} className="mb-2 flex items-center">
-                          <Field name={deductions.${index}.type} className="w-full p-2 border rounded" placeholder="Type" />
-                          <Field name={deductions.${index}.amount} type="number" className="w-full p-2 border rounded ml-2" placeholder="Amount" />
+                          <Field name={`deductions.${index}.type`} className="w-full p-2 border rounded" placeholder="Type" />
+                          <Field name={`deductions.${index}.amount`} type="number" className="w-full p-2 border rounded ml-2" placeholder="Amount" />
                           <button type="button" className="ml-2 text-red-500" onClick={() => remove(index)}>x</button>
                         </div>
                       ))}
@@ -178,3 +178,5 @@ const ProfileInfo = ({ title, fields }) => (
       </div>
     </div>
   );
+
+export default PayrollForm

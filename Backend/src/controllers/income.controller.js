@@ -4,6 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiError.js";
 // Create Income Head
+
+
 const createIncomeHead = asyncHandler(async (req, res, next) => {
   const { IncomeHead: incomeHeadName, Description } = req.body;
 

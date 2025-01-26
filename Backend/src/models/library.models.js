@@ -1,48 +1,4 @@
-const createBook = asyncHandler(async (req, res) => {
-    const {
-      BookTitle,
-      BookNumber,
-      ISBNNumber,
-      Publisher,
-      Author,
-      RackNumber,
-      Quantity,
-      BookPrice,
-      PostDate, // Ensure this field is extracted from the request body
-    } = req.body;
-  
-    if (!BookTitle || !BookNumber || !ISBNNumber || !Publisher || !Author || !RackNumber || !Quantity || !BookPrice || !PostDate) {
-      res.status(400);
-      throw new Error('Please fill in all fields');
-    }
-  
-    // Create a new book
-    const book = await Book.create({
-      BookTitle,
-      BookNumber,
-      ISBNNumber,
-      Publisher,
-      Author,
-      RackNumber,
-      Quantity,
-      BookPrice,
-      PostDate, // Make sure this is correctly used in your model
-    });
-  
-    res.status(201).json(book);
-  });
-  
-  const issuedBookSchema = new mongoose.Schema({
-    BookNumber: { type: String, required: true },
-    ReturnId: { type: String, required: true },
-    Returned: { type: Boolean, default: false },
-    ActualReturnDate: { type: Date },
-    ReturnDate: { type: Date },
-    FineAmount: { type: Number },
-    Book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }
-  });
-
-  const issuedBookSchema = new mongoose.Schema({
+const issuedBookSchema = new mongoose.Schema({
     Book: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Book",
@@ -100,8 +56,26 @@ const createBook = asyncHandler(async (req, res) => {
     RackNumber: { type: String, required: true },
     Quantity: { type: Number, required: true },
     BookPrice: { type: Number, required: true },
+    Subject:{type: Number, required: true},
     PostDate: { type: Date, required: true }, // Ensure this field is defined
   });
   
   const Book = mongoose.model('Book', bookSchema);
+  
+  const libraryNumberSchema = new mongoose.Schema({
+    LibraryCardNo: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    student: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "StudentInfo"
+    },
+    staff: {  // Note: Changed 'Staff' to 'staff' for consistency
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff"
+    }
+  });
+  
   

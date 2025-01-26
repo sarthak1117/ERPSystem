@@ -1,8 +1,10 @@
-const express = require('express');
-const { createPayroll } = require('../controllers/payrollController');
+import express from "express";
+import { createPayroll, getPayroll } from "../controllers/payroll.controller.js";
 
+  
 const router = express.Router();
 
-router.post('/payroll', createPayroll);
+router.post("/createpayroll", createPayroll)
 
-module.exports = router;
+
+router.get('/getPayroll', getPayroll);

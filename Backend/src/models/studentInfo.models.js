@@ -157,6 +157,12 @@ const studentInfoSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Batch", // Reference to the Batch model
   },
+
+  LibraryCardNo: {
+    type: String,
+    required: false, // Adjust based on whether it's required
+    unique: true // Ensure it is unique if necessary
+  },
 });
 
 export const Course = mongoose.model("Course", courseSchema);

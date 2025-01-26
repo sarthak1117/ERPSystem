@@ -1,4 +1,38 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
+const paymentSchema = new mongoose.Schema({
+  staff: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Staff',
+    required: true,
+  },
+  month: {
+    type: String,
+    required: true,
+  },
+  year: {
+    type: Number,
+    required: true,
+  },
+  paymentAmount: {
+    type: Number,
+    required: true,
+  },
+  paymentMode: {
+    type: String,
+    enum: ['check', 'cash', 'transfer to bank'],
+    required: true,
+  },
+  paymentDate: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  note: {
+    type: String,
+    required: false,
+  },
+}, { timestamps: true });
 
 const payrollSchema = new mongoose.Schema({
   staff: { type: mongoose.Schema.Types.ObjectId, ref: "Staff", required: true },
@@ -54,5 +88,6 @@ payrollSchema.pre('save', function (next) {
 });
 
 const Payroll = mongoose.model('Payroll', payrollSchema);
+const Payment = mongoose.model('Payment', paymentSchema);
 
-module.exports = Payroll;
+export { Payroll, Payment};

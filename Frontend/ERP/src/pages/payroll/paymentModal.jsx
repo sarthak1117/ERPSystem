@@ -9,37 +9,37 @@ const PaymentModal = ({ staff, month, year, onClose }) => {
     const dispatch = useDispatch();
     const [paymentAmount, setPaymentAmount] = useState(0);
 
-    const { payrollByStaff = [], loading: payrollLoading, error: payrollError } = useSelector(
-        (state) => state.payroll
-    );
+    // const { payrollByStaff = [], loading: payrollLoading, error: payrollError } = useSelector(
+    //     (state) => state.payroll
+    // );
 
-    useEffect(() => {
-        if (staff && staff.staffId && month && year) {
-            console.log("Fetching payroll for staff:", staff.staffId); // Debugging line
-            dispatch(fetchPayrollByStaff({ month, year, staffId: staff.staffId }))
-                .then((result) => {
-                    console.log("Fetch Payroll By Staff Result:", result); // Debugging line
-                    if (Array.isArray(result.payload)) {
-                        const payroll = result.payload.find(
-                            (p) =>
-                                p.staff.toString() === staff.staffId &&
-                                p.month === month &&
-                                p.year === parseInt(year, 10)
-                        );
-                        if (payroll) {
-                            setPaymentAmount(payroll.payrollSummary.netSalary);
-                        } else {
-                            console.error("Payroll not found for the provided criteria.");
-                        }
-                    } else {
-                        console.error("Unexpected payload format:", result.payload);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching payroll:", error);
-                });
-        }
-    }, [dispatch, staff, month, year]);
+    // useEffect(() => {
+    //     if (staff && staff.staffId && month && year) {
+    //         console.log("Fetching payroll for staff:", staff.staffId); // Debugging line
+    //         dispatch(fetchPayrollByStaff({ month, year, staffId: staff.staffId }))
+    //             .then((result) => {
+    //                 console.log("Fetch Payroll By Staff Result:", result); // Debugging line
+    //                 if (Array.isArray(result.payload)) {
+    //                     const payroll = result.payload.find(
+    //                         (p) =>
+    //                             p.staff.toString() === staff.staffId &&
+    //                             p.month === month &&
+    //                             p.year === parseInt(year, 10)
+    //                     );
+    //                     if (payroll) {
+    //                         setPaymentAmount(payroll.payrollSummary.netSalary);
+    //                     } else {
+    //                         console.error("Payroll not found for the provided criteria.");
+    //                     }
+    //                 } else {
+    //                     console.error("Unexpected payload format:", result.payload);
+    //                 }
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error fetching payroll:", error);
+    //             });
+    //     }
+    // }, [dispatch, staff, month, year]);
 
     const handlePaymentSubmit = (values, { setSubmitting,resetForm }) => {
         if (!staff || !staff.StaffId) {

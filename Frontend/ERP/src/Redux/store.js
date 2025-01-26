@@ -13,8 +13,8 @@ import {  thunk } from 'redux-thunk';
 import authReducer from './Reducer/AuthenticationSlice'
 import { incomeHeadReducer } from './Reducer/IncomeHeadslice';
 import { incomeReducer } from './Reducer/IncomeSlice';
-import {Designation} from '../pages/DepartmentAndDesignation/Designation';
-import {Department} from '../pages/DepartmentAndDesignation/Department';
+// import {Designation} from '../pages/DepartmentAndDesignation/Designation';
+// import {Department} from '../pages/DepartmentAndDesignation/Department';
 
 // // Combine reducers
 const rootReducer = combineReducers({
@@ -26,8 +26,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     incomeHead: incomeHeadReducer,
     income: incomeReducer,
-    department: DeparmentReducer,
-    designation: DesignationReducer
+    // department: DeparmentReducer,
+    // designation: DesignationReducer
 });
 
 const persistConfig = {

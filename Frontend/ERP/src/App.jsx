@@ -8,8 +8,10 @@ import Sidebar from './components/Layout/SideBar.jsx';
 import Login from './pages/LoginDashboard/login.jsx';
 import AddIncomeHead from './pages/Income/AddIncomeHead.jsx';
 import AddIncome from './pages/Income/AddIncome.jsx';
-import Department from './pages/DepartmentAndDesignation/Department.jsx';
-import Designation from './pages/DepartmentAndDesignation/Designation.jsx';
+import PayrollForm  from './pages/payroll/payrollForm.jsx';
+
+// import Department from './pages/DepartmentAndDesignation/Department.jsx';
+// import Designation from './pages/DepartmentAndDesignation/Designation.jsx';
 
 
 const App = () => {
@@ -24,8 +26,9 @@ const App = () => {
             <Route path="/userlogin" element={<Login/>} />
             <Route path="/AddIncome" element={<AddIncome/>} />
             <Route path="/incomeHeads" element={<AddIncomeHead/>} />
-            <Route path="/Department" element={<Department/>} />
-            <Route path="/Designation" element={<Designation/>} />
+            <Route path="/payrollForm" element={<PayrollForm/>} />
+            {/* <Route path="/Department" element={<Department/>} />
+            <Route path="/Designation" element={<Designation/>} /> */}
           </Routes>
         </main>
     </Router>
