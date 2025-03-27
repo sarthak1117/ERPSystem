@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { leaveBalanceSchema } from "./leave.models.js";
-import { Department, Designation } from "./DepartmentandDesignation.models.js";
+// import { leaveBalanceSchema } from "./leave.models.js";
+
 
 const staffSchema = new mongoose.Schema({
     StaffId: {
@@ -8,11 +8,7 @@ const staffSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    Role: {
-        type: String,
-        required: true,
-        enum: ["Admin", "Faculty", "Accountant", "Receptionist", "Super Admin", "Driver", "Manager", "Director", "Librarian", "Technical Head", "Lab Assistant"]
-    },
+
     FirstName: {
         type: String,
         required: true
@@ -125,14 +121,19 @@ const staffSchema = new mongoose.Schema({
         ref: "Designation",
         required: true
     }],
-    leaveBalances: [leaveBalanceSchema],
-    leaveBalance: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'LeaveBalance'
-      },  
+    // leaveBalances: [leaveBalanceSchema],
+    // leaveBalance: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'LeaveBalance'
+    //   },  
     LibraryCardNo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "LibraryCard"
+    },
+
+    Role: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: ""
     }
 });  
 

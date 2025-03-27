@@ -1,3 +1,9 @@
+import mongoose from 'mongoose';
+import asyncHandler from 'express-async-handler';
+import { Payroll } from '../models/payrollModel';
+
+
+
 const createPayroll = asyncHandler(async (req, res) => {
   const { role, staffId, month, year, basicSalary, earnings, deductions, tax } = req.body;
 
@@ -73,6 +79,49 @@ const createPayroll = asyncHandler(async (req, res) => {
     staffDetails,
   });
 });
+
+  // Adjust the path according to your project structure
+
+// Fetch payrolls by month and year
+const getPayroll = asyncHandler(async (req, res) => {
+  const { month, year } = req.query;
+
+  try {
+    if (!month || !year) {
+      return res.status(400).json({ message: 'Month and year are required' });
+    }
+
+    const payrolls = await Payroll.find({ month, year });
+    res.status(200).json(payrolls);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch payrolls', error });
+  }
+});
+
+// Fetch payrolls by staffId, month, and year
+const getPayrollByStaff = asyncHandler(async (req, res) => {
+  const { staffId, month, year } = req.query;
+
+  try {
+    if (!staffId || !month || !year) {
+      return res.status(400).json({ message: 'Staff ID, month, and year are required' });
+    }
+
+    // Ensure staffId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(staffId)) {
+      return res.status(400).json({ message: 'Invalid staff ID' });
+    }
+
+    const payrollsByStaff = await Payroll.find({ month, year, staff: mongoose.Types.ObjectId(staffId) });
+    res.status(200).json(payrollsByStaff);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch payrolls', error });
+  }
+});
+
+
+
+
 
 const getPayment= asyncHandler(async (req, res) => {
     const { staffId, month, year } = req.query;
@@ -187,3 +236,7 @@ const getStaffByRole = asyncHandler(async (req, res) => {
 
   res.json({ staffDetails });
 });
+
+
+
+export {createPayroll,getPayment,getPayroll,getPayrollByStaff,getStaffByRole, proceedToPayment}

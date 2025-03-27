@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-// import { addStaffDetails } from '../../redux/reducers/StaffSlice';
-import { getDepartments, getDesignations, submitStaffDetails } from "../../redux/reducers/HumanResourseSlice";
+import { submitStaffDetails } from '../../Redux/Reducer/humanResourceSlice';
+import { fetchDepartments} from "../../Redux/Reducer/DepartmentSlice";
+import { fetchDesignations } from "../../Redux/Reducer/DesignationSlice";
 import Layout from "../../components/Layout/Layout";
 import {
   InputField,
@@ -11,7 +12,7 @@ import {
   DateField,
   TextAreaField,
   Upload,
-} from "../../components/FormElement/FormElement";
+} from "../../components/FormElements/Fields";
 import { Navigate } from "react-router-dom";
 
 const maritalStatusOptions = [
@@ -66,19 +67,20 @@ const StaffDetailsUpload = () => {
   const dispatch = useDispatch();
   const [showMoreDetails, setShowMoreDetails] = useState(false);
   const { loading, error, success } = useSelector((state) => state.humanResource);
-    const { departments = [], designations = [] } = useSelector((state) => state.humanResource);
-
+  const {  data: departments = [] } = useSelector((state) => state.department);  
+  const { data: designations =[] } = useSelector((state) => state.designation); 
   const toggleGuardianDetails = () => {
     setShowMoreDetails((prevState) => !prevState);
   };
 
     useEffect(() => {
-      dispatch(getDepartments());
-      dispatch(getDesignations());
-    }, [dispatch]);
+      dispatch(fetchDepartments());
+      dispatch(fetchDesignations());
+    }, [dispatch]); 
 
 
     const handleSubmit = async (values, { setSubmitting }) => {
+      console.log("Form submitted with values:", values);
       const formData = new FormData();
       Object.keys(values).forEach((key) => {
         formData.append(key, values[key]);
@@ -87,26 +89,33 @@ const StaffDetailsUpload = () => {
         await dispatch(submitStaffDetails(formData)).unwrap();
         alert('Staff information saved successfully!');
       } catch (error) {
-        console.error('Error saving staff information:', error);
-        alert('An error occurred while saving staff information.');
+        if (error.message.includes("Staff ID already exists")) {
+          alert("Error: Staff ID already exists. Please use a different ID.");
+        } else {
+          console.error("Error saving staff information:", error);
+          alert("An error occurred while saving staff information.");
+        }
+      
       } finally {
         setSubmitting(false);
       }
     };
 
-   const  Departmentoptions=departments.map((department) => ({
-        label: department.name,
+   const  Departmentoptions = departments.map((department) => ({
+        label: department.Name,
         value: department._id,
       }))
 
-     const Designationoptions=designations.map((designation) => ({
-        label: designation.name,
+     const Designationoptions = designations.map((designation) => ({
+        label: designation.Name,
         value: designation._id,
       }))
 
 
     console.log("Departments:", departments);
-    console.log("Designations:", designations);
+    // console.log("Designations:", designations);
+
+
 
   return (
     <Layout>
@@ -116,8 +125,8 @@ const StaffDetailsUpload = () => {
             initialValues={{
               StaffId: "",
               Role: "",
-              DesignationIds: [],
-              DepartmentIds: [],
+              Designation: "",
+              Department: "",
               FirstName: "",
               LastName: "",
               FatherName: "",
@@ -148,7 +157,7 @@ const StaffDetailsUpload = () => {
               OtherDocuments: null,
             }}
             validationSchema={validationSchema}
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit}
           >
             {({ setFieldValue, isSubmitting }) => (
               <Form className="flex flex-auto items-start w-full">
@@ -163,7 +172,7 @@ const StaffDetailsUpload = () => {
                         onClick={() => Navigate("/importStaff")}
                         className="hover:bg-slate-400 bg-cyan-800 text-white py-2 px-2 rounded"
                       >
-                        Import Student
+                        Import Staff
                       </button>
                     </div>
                   </div>
@@ -172,12 +181,12 @@ const StaffDetailsUpload = () => {
                     <InputField label="Role" name="Role" />
                     <SelectField
                       label="Department"
-                      name="DepartmentIds"
+                      name="Department"
                       options={Departmentoptions}
                     />
                     <SelectField
                       label="Designation"
-                      name="DesignationIds"
+                      name="Designation"
                       options={Designationoptions}
                     />
                     <InputField label="First Name" name="FirstName" />

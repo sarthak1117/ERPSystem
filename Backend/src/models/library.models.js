@@ -1,4 +1,7 @@
-const issuedBookSchema = new mongoose.Schema({
+import mongoose from "mongoose";
+
+const issuedBookSchema = new mongoose.Schema(
+  {
     Book: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Book",
@@ -6,13 +9,13 @@ const issuedBookSchema = new mongoose.Schema({
     },
     IssuedTo: {
       type: mongoose.Schema.Types.ObjectId,
-      refPath: 'userModel',
+      refPath: "userModel",
       required: true,
     },
     userModel: {
       type: String,
       required: true,
-      enum: ['StudentInfo', 'Staff']
+      enum: ["StudentInfo", "Staff"],
     },
     BorrowDate: {
       type: Date,
@@ -26,28 +29,28 @@ const issuedBookSchema = new mongoose.Schema({
     ReturnId: {
       type: String,
     },
-  
     Submission: {
       type: String,
-      enum: ['Late', 'Ontime'],
+      enum: ["Late", "Ontime"],
     },
-  
     LateFine: {
       type: Number,
     },
-  
     IssueType: {
       type: String,
-      enum: ['CourseDuration', 'Personal'],
+      enum: ["CourseDuration", "Personal"],
       required: true,
     },
     Returned: {
       type: Boolean,
       default: false,
     },
-  });
+  },
+  { timestamps: true }
+);
 
-  const bookSchema = new mongoose.Schema({
+const bookSchema = new mongoose.Schema(
+  {
     BookTitle: { type: String, required: true },
     BookNumber: { type: String, required: true },
     ISBNNumber: { type: String, required: true },
@@ -56,26 +59,31 @@ const issuedBookSchema = new mongoose.Schema({
     RackNumber: { type: String, required: true },
     Quantity: { type: Number, required: true },
     BookPrice: { type: Number, required: true },
-    Subject:{type: Number, required: true},
-    PostDate: { type: Date, required: true }, // Ensure this field is defined
-  });
-  
-  const Book = mongoose.model('Book', bookSchema);
-  
-  const libraryNumberSchema = new mongoose.Schema({
+    Subject: { type: Number, required: true },
+    PostDate: { type: Date, required: true },
+  },
+  { timestamps: true }
+);
+
+const libraryNumberSchema = new mongoose.Schema(
+  {
     LibraryCardNo: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     student: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "StudentInfo"
+      ref: "StudentInfo",
     },
-    staff: {  // Note: Changed 'Staff' to 'staff' for consistency
+    staff: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Staff"
-    }
-  });
-  
-  
+      ref: "Staff",
+    },
+  },
+  { timestamps: true }
+);
+
+export const Book = mongoose.model("Book", bookSchema);
+export const LibraryNumber = mongoose.model("LibraryNumber", libraryNumberSchema);
+export const IssuedBook = mongoose.model("IssuedBook", issuedBookSchema);

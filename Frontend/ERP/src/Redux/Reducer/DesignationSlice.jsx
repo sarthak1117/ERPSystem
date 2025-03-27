@@ -76,4 +76,4 @@ const designationSlice = createSlice({
   },
 });
 
-export default designationSlice.reducer;
+export const designationReducer = designationSlice.reducer;

@@ -3,6 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 
+
+// import { seedPermissions } from './seedPermissions.js';
+
 const __dirname = path.resolve();
 
 const app = express();
@@ -26,7 +29,7 @@ import userRouter from './routes/user.routes.js';
 // import expenseRouter from "./routes/expense.route.js";
 import incomeRouter from "./routes/income.routes.js";
 // import attendanceRouter from "./routes/attendence.route.js";
-// import staffRouter from "./routes/staff.route.js";
+import staffRouter from "./routes/staffInfo.routes.js";
 // import leaveRouter from "./routes/leave.route.js";
 // import ExaminationRouter from "./routes/Examination.route.js";
 // import uploadCenterRouter from "./routes/uploadCenter.routes.js";
@@ -43,7 +46,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/income", incomeRouter);
 // app.use("/api/v1/expense", expenseRouter);
 // app.use("/api/v1/attendance", attendanceRouter);
-// app.use("/api/v1/staff", staffRouter);
+app.use("/api/v1/staff", staffRouter);
 app.use("/api/v1/designation", designationRouter);
 app.use("/api/v1/department", departmentRouter);
 // app.use("/api/v1/leave", leaveRouter);
@@ -57,5 +60,13 @@ app.use("/api/v1/department", departmentRouter);
 // app.get('*', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'Frontend', 'dist', 'index.html'));
 // });
+
+
+// Seed database
+// const seedDatabase = async () => {
+//     await seedPermissions();
+// };
+
+// seedDatabase();
 
 export { app };
